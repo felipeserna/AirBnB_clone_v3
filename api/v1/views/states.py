@@ -44,10 +44,27 @@ def post_state():
     dict_request = request.get_json()
     if  dict_request is None:
         return (jsonify({'error': 'Not a JSON'}), 400)
-    
+
     if 'name' not in dict_request:
          return (jsonify({'error': 'Missing name'}), 400)
-         
+
     new_obj = State(**dict_request)
     new_obj.save()
     return (jsonify(new_obj.to_dict()), 201)
+
+@app_views.route('states/<state_id>', strict_slashes=False, methods=['PUT'])
+def put_state(state_id=None):
+    """ Updates a State """
+    update_dict = request.get_json()
+    if update_dict is None:
+        return (jsonify({'error': 'Not a JSON'}), 400)
+
+    id_state = storage.get('State', state_id)
+    if id_state:
+        for key, value in update_dict.items():
+            if key != 'id' and key != 'created_at' and key != 'updated_at':
+                setattr(id_state, key, value)
+        id_state.save()
+        return (jsonify(id_state.to_dict()), 200)
+    else:
+        abort(404)

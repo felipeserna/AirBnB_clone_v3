@@ -5,6 +5,7 @@ starts a Flask web application
 
 from api.v1.views import app_views
 from flask import Flask, jsonify
+from flask_cors import CORS
 from models import storage
 from os import getenv
 
@@ -12,6 +13,9 @@ from os import getenv
 # create an instance of the Flask class
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+
+# create an instance of the CORS class
+cors = CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
 
 host = getenv('HBNB_API_HOST')
 port = getenv('HBNB_API_PORT')

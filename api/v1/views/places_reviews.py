@@ -90,7 +90,7 @@ def put_review(review_id=None):
         ignore_key = ['id', 'created_at', 'updated_at', 'user_id', 'place_id']
         for key, value in update_dict.items():
             if key not in ignore_key:
-                setattr(id_city, key, value)
+                setattr(id_review, key, value)
         id_review.save()
         return (jsonify(id_review.to_dict()), 200)
     else:
